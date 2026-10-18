@@ -73,218 +73,220 @@ while opcion!= 3:
                 """)
 
                 print("En base a las cordenadas mostradas en el tablero elige donde empezar a resolver el tablero")
+                try: 
+                    coordenadasV = input ("Que letra de las coordenadas quieres ocupar:")
+                    match coordenadasV:
+                        case 'A':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[0][coordenadasH] = nuevoDato
+                        
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
+                        
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
+                        
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
+                        
+                                    print (valor, " ", end= " ")
+                                print ()
+                        case 'B':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[1][coordenadasH] = nuevoDato
+                                            
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
+                                            
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
+                                            
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
+                                            
+                                    print (valor, " ", end= " ")
+                                print ()
+                        case 'C':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[2][coordenadasH] = nuevoDato
+                                            
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
+                                            
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
+                                            
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
+                                            
+                                    print (valor, " ", end= " ")
+                                print ()
+                        case 'D':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[3][coordenadasH] = nuevoDato
+                                            
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
 
-                coordenadasV = input ("Que letra de las coordenadas quieres ocupar:")
-                match coordenadasV:
-                    case 'A':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[0][coordenadasH] = nuevoDato
-                        
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
-                        
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
-                        
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
-                        
-                                print (valor, " ", end= " ")
-                            print ()
-                    case 'B':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[1][coordenadasH] = nuevoDato
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
                                             
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
                                             
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
+                                    print (valor, " ", end= " ")
+                                print ()
+                        case 'E':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[4][coordenadasH] = nuevoDato
                                             
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
                                             
-                                print (valor, " ", end= " ")
-                            print ()
-                    case 'C':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[2][coordenadasH] = nuevoDato
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
+
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
                                             
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
+                                    print (valor, " ", end= " ")
+                                print ()                            
+                        case 'F':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[5][coordenadasH] = nuevoDato
                                             
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
                                             
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
                                             
-                                print (valor, " ", end= " ")
-                            print ()
-                    case 'D':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[3][coordenadasH] = nuevoDato
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
                                             
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
+                                    print (valor, " ", end= " ")
+                                print ()
+                        case 'G':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[6][coordenadasH] = nuevoDato
                                             
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
                                             
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
+
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
                                             
-                                print (valor, " ", end= " ")
-                            print ()
-                    case 'E':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[4][coordenadasH] = nuevoDato
+                                    print (valor, " ", end= " ")
+                                print ()
+                        case 'H':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[7][coordenadasH] = nuevoDato
                                             
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
                                             
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
                                             
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
                                             
-                                print (valor, " ", end= " ")
-                            print ()                            
-                    case 'F':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[5][coordenadasH] = nuevoDato
+                                    print (valor, " ", end= " ")
+                                print ()
+                        case 'I':
+                            coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                            nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            coordenadasH -= 1
+                            sudokuFacil[8][coordenadasH] = nuevoDato
                                             
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
+                            print ("A   B   C     D   E   F     G   H   I ")
+                            print ("- - - - - - - - - - - - - - - - - - - ")
                                             
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
+                            for fila in range (9):
+                                if fila % 3 == 0 and fila!=0:
+                                    print ("- - - - - - - - - - - - - - - - - - - ")
+                                for columna in range (10):
+                                    if columna % 3 == 0 and columna != 0:
+                                        print("| ", end="")
                                             
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
-                                            
-                                print (valor, " ", end= " ")
-                            print ()
-                    case 'G':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[6][coordenadasH] = nuevoDato
-                                            
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
-                                            
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
-                                            
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
-                                            
-                                print (valor, " ", end= " ")
-                            print ()
-                    case 'H':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[7][coordenadasH] = nuevoDato
-                                            
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
-                                            
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
-                                            
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
-                                            
-                                print (valor, " ", end= " ")
-                            print ()
-                    case 'I':
-                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
-                        nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        coordenadasH -= 1
-                        sudokuFacil[8][coordenadasH] = nuevoDato
-                                            
-                        print ("A   B   C     D   E   F     G   H   I ")
-                        print ("- - - - - - - - - - - - - - - - - - - ")
-                                            
-                        for fila in range (9):
-                            if fila % 3 == 0 and fila!=0:
-                                print ("- - - - - - - - - - - - - - - - - - - ")
-                            for columna in range (10):
-                                if columna % 3 == 0 and columna != 0:
-                                    print("| ", end="")
-                                            
-                                if sudokuFacil[fila][columna] != 0:
-                                    valor = sudokuFacil[fila][columna]
-                                else:
-                                    valor = "."
-                                            
-                                print (valor, " ", end= " ")
-                            print ()
-                    case _:
-                        print("Ingresa bien la letra de la coordenada")
+                                    if sudokuFacil[fila][columna] != 0:
+                                        valor = sudokuFacil[fila][columna]
+                                    else:
+                                        valor = "."
+
+                                    print (valor, " ", end= " ")
+                                print ()
+                        case _:
+                            print("Ingresa bien la letra de la coordenada")
+                except ZeroDivisionError:
+                    print ("No hay coordenadas con zero en el tablero")
 
 
                             
