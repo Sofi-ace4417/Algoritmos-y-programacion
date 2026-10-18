@@ -74,11 +74,34 @@ while opcion!= 3:
 
                 print("En base a las cordenadas mostradas en el tablero elige donde empezar a resolver el tablero")
 
-                coordenadasH = input ("Que numero de las coordenadas quieres ocupar:")
-                match coordenadasH:
-                    case '1':
-                        for cordenadasH in range (9):
-                            print (fila)
+                coordenadasV = input ("Que letra de las coordenadas quieres ocupar:")
+                match coordenadasV:
+                    case 'A':
+                        coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
+                        nuevoDato = int(input("Ingresa el nuevo valor: "))
+                        sudokuFacil[0][coordenadasH].append(nuevoDato)
+                        print ("A   B   C     D   E   F     G   H   I ")
+                        print ("- - - - - - - - - - - - - - - - - - - ")
+                        
+                        for fila in range (9):
+                            if fila % 3 == 0 and fila!=0:
+                                print ("- - - - - - - - - - - - - - - - - - - ")
+                            for columna in range (10):
+                                if columna % 3 == 0 and columna != 0:
+                                    print("| ", end="")
+                        
+                                if sudokuFacil[fila][columna] != 0:
+                                    valor = sudokuFacil[fila][columna]
+                                else:
+                                    valor = "."
+                        
+                                print (valor, " ", end= " ")
+                                print ()
+
+
+
+
+                            
 
 
 
