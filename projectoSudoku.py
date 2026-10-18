@@ -79,7 +79,9 @@ while opcion!= 3:
                     case 'A':
                         coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                         nuevoDato = int(input("Ingresa el nuevo valor: "))
-                        sudokuFacil[0][coordenadasH].append(nuevoDato)
+                        coordenadasH -= 1
+                        sudokuFacil[0][coordenadasH] = nuevoDato
+                        
                         print ("A   B   C     D   E   F     G   H   I ")
                         print ("- - - - - - - - - - - - - - - - - - - ")
                         
@@ -96,7 +98,7 @@ while opcion!= 3:
                                     valor = "."
                         
                                 print (valor, " ", end= " ")
-                                print ()
+                            print ()
 
 
 
