@@ -16,6 +16,9 @@ while opcion!= 3:
 |  3. Dificil                |
 |                            |
 |============================|
+|  4.Ayuda                   |
+|============================|
+
         """)
         opcion = input("Elige una dificultad: ")
         match opcion:
@@ -32,6 +35,7 @@ while opcion!= 3:
                 [0, 5, 0, 4, 0, 9, 0, 1, 9, '9'],
                 ]
                 print ("A   B   C     D   E   F     G   H   I ")
+                print ("- - - - - - - - - - - - - - - - - - - ")
 
                 for fila in range (9):
                     if fila % 3 == 0 and fila!=0:
@@ -62,11 +66,21 @@ while opcion!= 3:
                 |                            |
                 |============================|
                 | a. Nuevo juego             |
-                | b. Validar                 |
+                | b. Ayuda                   |
                 | c. Resolver                |
                 | d. Resetear                |
                 |============================|
                 """)
+
+                print("En base a las cordenadas mostradas en el tablero elige donde empezar a resolver el tablero")
+
+                coordenadasH = input ("Que numero de las coordenadas quieres ocupar:")
+                match coordenadasH:
+                    case '1':
+                        for cordenadasH in range (9):
+                            print (fila)
+
+
 
 
                 
