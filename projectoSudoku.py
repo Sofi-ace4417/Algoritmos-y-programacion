@@ -79,6 +79,8 @@ while opcion!= 3:
                         case 'A':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError
                             coordenadasH -= 1
                             sudokuFacil[0][coordenadasH] = nuevoDato
                         
@@ -102,6 +104,8 @@ while opcion!= 3:
                         case 'B':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError                            
                             coordenadasH -= 1
                             sudokuFacil[1][coordenadasH] = nuevoDato
                                             
@@ -125,6 +129,8 @@ while opcion!= 3:
                         case 'C':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError                            
                             coordenadasH -= 1
                             sudokuFacil[2][coordenadasH] = nuevoDato
                                             
@@ -148,6 +154,8 @@ while opcion!= 3:
                         case 'D':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError                            
                             coordenadasH -= 1
                             sudokuFacil[3][coordenadasH] = nuevoDato
                                             
@@ -171,6 +179,8 @@ while opcion!= 3:
                         case 'E':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError
                             coordenadasH -= 1
                             sudokuFacil[4][coordenadasH] = nuevoDato
                                             
@@ -194,6 +204,8 @@ while opcion!= 3:
                         case 'F':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError
                             coordenadasH -= 1
                             sudokuFacil[5][coordenadasH] = nuevoDato
                                             
@@ -217,6 +229,8 @@ while opcion!= 3:
                         case 'G':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError                            
                             coordenadasH -= 1
                             sudokuFacil[6][coordenadasH] = nuevoDato
                                             
@@ -240,6 +254,8 @@ while opcion!= 3:
                         case 'H':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError
                             coordenadasH -= 1
                             sudokuFacil[7][coordenadasH] = nuevoDato
                                             
@@ -263,6 +279,8 @@ while opcion!= 3:
                         case 'I':
                             coordenadasH = int(input("Ahora ingresa el numero de las coordenadas quieres usar:"))
                             nuevoDato = int(input("Ingresa el nuevo valor: "))
+                            if nuevoDato <= 0 and nuevoDato > 9:
+                                raise ZeroDivisionError and ValueError
                             coordenadasH -= 1
                             sudokuFacil[8][coordenadasH] = nuevoDato
                                             
@@ -287,6 +305,8 @@ while opcion!= 3:
                             print("Ingresa bien la letra de la coordenada")
                 except ZeroDivisionError:
                     print ("No hay coordenadas con zero en el tablero")
+                except ValueError:
+                    print ("Solo se pueden ingresar numeros del 1 al 9")
 
 
                             
