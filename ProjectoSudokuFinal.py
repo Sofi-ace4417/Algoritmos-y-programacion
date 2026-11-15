@@ -7,6 +7,41 @@ from pathlib import Path                   # para encontrar la imagen junto al p
 TAM = 50                       # tamaño de cada casilla del tablero (pixeles)
 MARGEN = 10                    # espacio alrededor del tablero
 
+#  GENERACIÓN DEL SUDOKU
+
+def resueltoFacil():
+    subCuadro = []
+    while len(subCuadro) < 9:
+        digito = random.randint(1, 9)
+        if digito not in subCuadro:
+            subCuadro.append(digito)
+
+    cuadro = []
+
+    for fila in range(9):
+        subCuadro1 = []
+        for columna in range(9):
+            indice = (columna + (fila % 3) * 3 + fila // 3) % 9
+            subCuadro1.append(subCuadro[indice])
+
+        cuadro.append(subCuadro1)
+        
+    return cuadro
+
+def facil(cuadro, ocultar=0):
+    cuadroCopia = [fila[:] for fila in cuadro]
+    ocultos = 0
+
+    while ocultos < ocultar:
+        fila = random.randint(0, 8)
+        columna = random.randint(0, 8)
+
+        if cuadroCopia[fila][columna] != 0:
+            cuadroCopia[fila][columna] = 0
+            ocultos += 1
+
+    return cuadroCopia
+
 # FUNCIONES AUXILIARES
 
 def mostrarLogo(contenedor, ancho, alto): # Muestra 'imagen.png' dentro del contenedor. Si no existe, simplemente no la muestra
@@ -62,12 +97,43 @@ def abrirJuego(dificultad):
     estado = {"segundos": 0, "id": None}                     # tiempo y id del temporizador de ESTA ventana
 
     # Tablero a la izquierda 
-
     lado = MARGEN * 2 + TAM * 9  # tamaño total del tablero: 9 casillas + margen a ambos lados
     canvas = tk.Canvas(ventanaJuego, width=lado, height=lado, # crea el lienzo cuadrado donde se dibuja el tablero
                        bg="#e9ecf1", highlightthickness=0)  # mismo fondo que la ventana; sin borde alrededor
     canvas.grid(row=0, column=0, padx=20, pady=20) # lo coloca en la fila 0, columna 0 (izquierda) con 20 px de espacio
     dibujarTableroVacio(canvas)   # llama a la función que dibuja las casillas y las líneas
+
+    if dificultad == "Fácil":
+        ocultos = 30
+    elif dificultad == "Medio":
+        ocultos = 40
+    else:
+        ocultos = 50
+
+    tableroResuelto = resueltoFacil()
+    tableroSinResolver = facil(tableroResuelto, ocultar=ocultos)
+
+    matrizCeldas = [[None for i in range (9)] for i in range (9)]
+
+    for fila in range (9):
+        for columna in range (9):
+            valor = tableroSinResolver[fila][columna]
+
+            x = MARGEN + columna * TAM + 4
+            y = MARGEN + fila * TAM + 4
+
+            celda = tk.Entry(canvas, width=2, font=("Helvetica", 16, "bold"), justify = "center", relief = "flat", bd= 0)
+
+            if valor != 0:
+                celda.insert(0, str(valor))
+                celda.config(state="disabled", disabledbackground="#e9ecf1", disabledforeground="#14213d")
+            else:
+                celda.config(bg="white", fg= "#14213d")
+
+            canvas.create_window(x,y, anchor= "nw", window= celda, width = TAM - 7, height= TAM -7)
+            matrizCeldas[fila][columna] = celda
+
+    
 
     # Panel a la derecha 
     panel = tk.Frame(ventanaJuego, bg="#f4f6fa", padx=30, pady=20)  # Frame = caja contenedora; fondo claro y relleno interno
@@ -83,7 +149,7 @@ def abrirJuego(dificultad):
     tk.Label(panel, text="Errores: 0/3", font=("Helvetica", 15),
              fg="#14213d", bg="#f4f6fa").pack(pady=5)
 
-    # --- Temporizador (se llama a sí mismo cada segundo) ---
+    # Temporizador (se llama a sí mismo cada segundo) ---
     def actualizarTimer():  # función dentro de otra función: solo existe dentro de abrirJuego
         minutos = estado["segundos"] // 60  # // es división entera: 125 segundos -> 2 minutos
         segundos = estado["segundos"] % 60  # % es el residuo: 125 segundos -> 5 segundos sobrantes
@@ -91,7 +157,7 @@ def abrirJuego(dificultad):
         estado["segundos"] += 1
         estado["id"] = ventanaJuego.after(1000, actualizarTimer)  # programa que esta misma función se ejecute en 1000 ms; guarda el id para poder cancelarla
 
-    # --- Cerrar: primero cancela el temporizador para evitar errores ---
+    # Cerrar: primero cancela el temporizador para evitar errores ---
     def cerrar():
         if estado["id"] is not None:  # si el temporizador ya estaba programado...
             ventanaJuego.after_cancel(estado["id"]) # ...lo cancela, para que no intente actualizar una ventana que ya no existe
@@ -103,9 +169,8 @@ def abrirJuego(dificultad):
     actualizarTimer()                                        # arranca el reloj
 
 
-# ----------------------------------------------------------------------
 # MENÚ PRINCIPAL
-# ----------------------------------------------------------------------
+
 ventana = tk.Tk()
 ventana.title("Menú de Sudoku Python")
 ventana.geometry("480x520")
@@ -114,7 +179,7 @@ ventana.configure(bg="#e9ecf1")
 
 # Tarjeta central (da la sensación de "panel flotante")
 tarjeta = tk.Frame(ventana, bg="#f4f6fa", padx=40, pady=30)
-tarjeta.pack(expand=True)     # expand=True la centra en la ventana                               # expand=True la centra en la ventana
+tarjeta.pack(expand=True)     # expand=True la centra en la ventana                               
 
 mostrarLogo(tarjeta, 280, 110)  # muestra el logo dentro de la tarjeta (280 x 110 px)
 
