@@ -86,7 +86,6 @@ def dibujarTableroVacio(canvas): #Dibuja un tablero de 9x9 con líneas gruesas c
         canvas.create_line(MARGEN, pos, fin, pos, width=3, fill="#14213d")   # horizontal
         canvas.create_line(pos, MARGEN, pos, fin, width=3, fill="#14213d")   # vertical
 
-
 # VENTANA DE JUEGO
 
 def abrirJuego(dificultad):
@@ -95,21 +94,42 @@ def abrirJuego(dificultad):
     ventanaJuego.resizable(False, False)
     ventanaJuego.configure(bg="#e9ecf1")
 
-    estado = {"segundos": 0, "id": None, "Errores": 0}                     # tiempo y id del temporizador de ESTA ventana
+    estado = {"segundos": 0, "id": None, "Errores": 0}         # tiempo y id del temporizador
     
+    # 1. CREAMOS PRIMERO EL PANEL DERECHO (para que la variable 'panel' exista)
+    panel = tk.Frame(ventanaJuego, bg="#f4f6fa", padx=30, pady=20)  
+    panel.grid(row=0, column=1, sticky="ns", padx=(0, 20), pady=20)  
+
+    mostrarLogo(panel, 200, 80)                              
+
+    tk.Label(panel, text=f"Jugador: {nombreJugador}", font=("Helvetica", 15, "bold"),   
+             fg="#3b6fb0", bg="#f4f6fa").pack(pady=5)                                    
+
+    etiquetaTiempo = tk.Label(panel, text="Timer: 00:00", font=("Helvetica", 15),
+                              fg="#14213d", bg="#f4f6fa")
+    etiquetaTiempo.pack(pady=5)  
+
+    tk.Label(panel, text=f"Dificultad: {dificultad}", font=("Helvetica", 15),
+             fg="#14213d", bg="#f4f6fa").pack(pady=5)
+    
+    etiquetaErrores = tk.Label(panel, text="Errores: 0/3", font=("Helvetica", 15),
+             fg="#14213d", bg="#f4f6fa")
+    etiquetaErrores.pack(pady=5)
+
     def contadorErrores(fila, columna, event):
-        valor = matrizCeldas [fila][columna].get()
+        valor = matrizCeldas[fila][columna].get()
 
         if valor == "":
             return
 
         if not valor.isdigit() or valor == "0":
-            valor = matrizCeldas [fila][columna].delete(0, tk.END)
+            matrizCeldas[fila][columna].delete(0, tk.END)
+            return
 
         if len(valor) > 1:
             valor = valor[-1]
-            valor = matrizCeldas [fila][columna].delete(0, tk.END)
-            valor = matrizCeldas [fila][columna].insert(0, valor)
+            matrizCeldas[fila][columna].delete(0, tk.END)
+            matrizCeldas[fila][columna].insert(0, valor)
 
         numeroIngresado = int(valor)
         numeroCorrecto = tableroResuelto[fila][columna]
@@ -117,17 +137,19 @@ def abrirJuego(dificultad):
         if numeroIngresado != numeroCorrecto:
             estado["Errores"] += 1
             etiquetaErrores.config(text=f"Errores:{estado['Errores']}/3")
+            matrizCeldas[fila][columna].config(fg="red", bg="#fadbd8")
 
         if estado["Errores"] >= 3:
             messagebox.showerror("Lo siento, haz llegado al máximo numero de errores","Fin del juego")
             cerrar()
 
-    # Tablero a la izquierda 
-    lado = MARGEN * 2 + TAM * 9  # tamaño total del tablero: 9 casillas + margen a ambos lados
-    canvas = tk.Canvas(ventanaJuego, width=lado, height=lado, # crea el lienzo cuadrado donde se dibuja el tablero
-                       bg="#e9ecf1", highlightthickness=0)  # mismo fondo que la ventana; sin borde alrededor
-    canvas.grid(row=0, column=0, padx=20, pady=20) # lo coloca en la fila 0, columna 0 (izquierda) con 20 px de espacio
-    dibujarTableroVacio(canvas)   # llama a la función que dibuja las casillas y las líneas
+    # 2. CREAMOS EL TABLERO A LA IZQUIERDA
+
+    lado = MARGEN * 2 + TAM * 9  
+    canvas = tk.Canvas(ventanaJuego, width=lado, height=lado, 
+                       bg="#e9ecf1", highlightthickness=0)  
+    canvas.grid(row=0, column=0, padx=20, pady=20) 
+    dibujarTableroVacio(canvas)   
 
     if dificultad == "Fácil":
         ocultos = 35
@@ -155,49 +177,54 @@ def abrirJuego(dificultad):
                 celda.config(state="disabled", disabledbackground="#e9ecf1", disabledforeground="#14213d")
             else:
                 celda.config(bg="white", fg= "#14213d")
-                celda.bind("<KeyRelease>", lambda event, f = fila, c = columna: contadorErrores(f,c, event))
+                celda.bind("<KeyRelease>", lambda event, f = fila, c = columna: contadorErrores(f, c, event))
 
-            canvas.create_window(x,y, anchor= "nw", window= celda, width = TAM - 7, height= TAM -7)
+            canvas.create_window(x, y, anchor= "nw", window= celda, width = TAM - 7, height= TAM - 7)
             matrizCeldas[fila][columna] = celda
 
-    # Panel a la derecha 
-    panel = tk.Frame(ventanaJuego, bg="#f4f6fa", padx=30, pady=20)  # Frame = caja contenedora; fondo claro y relleno interno
-    panel.grid(row=0, column=1, sticky="ns", padx=(0, 20), pady=20)  # fila 0, columna 1 (derecha); sticky="ns" lo estira de arriba a abajo
+    def reiniciarJuego():
+        estado["segundos"] = 0
+        estado["Errores"] = 0
+        etiquetaErrores.config(text="Errores: 0/3")
 
-    mostrarLogo(panel, 200, 80)                              # logo (si existe)
+        for fila in range(9):
+            for columna in range(9):
+                if matrizCeldas[fila][columna].cget("state") != "disabled":
+                    matrizCeldas[fila][columna].delete(0, tk.END)
+                    matrizCeldas[fila][columna].config(bg="white", fg="#14213d")
 
-    tk.Label(panel, text=f"Jugador: {nombreJugador}", font=("Helvetica", 15, "bold"),   # muestra el nombre del jugador
-             fg="#3b6fb0", bg="#f4f6fa").pack(pady=5)                                    # azul para que resalte
+    def resolverJuego():
+        for fila in range(9):
+            for columna in range(9):
+                celda =  matrizCeldas[fila][columna]
+                if celda.cget("state") != "disabled":
+                    celda.config(state="normal")
+                    celda.delete(0, tk.END)
+                    celda.insert(0, str(tableroResuelto[fila][columna]))
+                    celda.config(fg="#27ae60", bg = "white")
 
-    etiquetaTiempo = tk.Label(panel, text="Timer: 00:00", font=("Helvetica", 15),
-                              fg="#14213d", bg="#f4f6fa")
-    etiquetaTiempo.pack(pady=5)  # la coloca en el panel con 5 px de espacio arriba y abajo
-    
-    tk.Label(panel, text=f"Dificultad: {dificultad}", font=("Helvetica", 15),
-             fg="#14213d", bg="#f4f6fa").pack(pady=5)
-    
-    etiquetaErrores = tk.Label(panel, text="Errores: 0/3", font=("Helvetica", 15),
-             fg="#14213d", bg="#f4f6fa")
-    etiquetaErrores.pack(pady=5)
-
-    # Temporizador (se llama a sí mismo cada segundo) ---
-    def actualizarTimer():  # función dentro de otra función: solo existe dentro de abrirJuego
-        minutos = estado["segundos"] // 60  # // es división entera: 125 segundos -> 2 minutos
-        segundos = estado["segundos"] % 60  # % es el residuo: 125 segundos -> 5 segundos sobrantes
-        etiquetaTiempo.config(text=f"Timer: {minutos:02d}:{segundos:02d}") # cambia el texto; :02d fuerza 2 dígitos (5 -> 05)
+    # Temporizador 
+    def actualizarTimer():  
+        minutos = estado["segundos"] // 60  
+        segundos = estado["segundos"] % 60  
+        etiquetaTiempo.config(text=f"Timer: {minutos:02d}:{segundos:02d}") 
         estado["segundos"] += 1
-        estado["id"] = ventanaJuego.after(1000, actualizarTimer)  # programa que esta misma función se ejecute en 1000 ms; guarda el id para poder cancelarla
+        estado["id"] = ventanaJuego.after(1000, actualizarTimer)  
 
-    # Cerrar: primero cancela el temporizador para evitar errores ---
+    # Cerrar 
     def cerrar():
-        if estado["id"] is not None:  # si el temporizador ya estaba programado...
-            ventanaJuego.after_cancel(estado["id"]) # ...lo cancela, para que no intente actualizar una ventana que ya no existe
+        if estado["id"] is not None:  
+            ventanaJuego.after_cancel(estado["id"]) 
         ventanaJuego.destroy()
 
-    crearBoton(panel, "Volver al menú", cerrar).pack(pady=(25, 0))
-    ventanaJuego.protocol("WM_DELETE_WINDOW", cerrar)        # también al cerrar con la X: en lugar de cerrar directo, ejecuta cerrar()
+    # 3. AÑADIMOS LOS BOTONES AL PANEL DERECHO YA CREADO
 
-    actualizarTimer()                                        # arranca el reloj
+    crearBoton(panel, "Reiniciar", reiniciarJuego).pack(pady=5)
+    crearBoton(panel, "Resolver", resolverJuego).pack(pady=5)
+    crearBoton(panel, "Nuevo juego", cerrar).pack(pady=5)
+
+    ventanaJuego.protocol("WM_DELETE_WINDOW", cerrar)        
+    actualizarTimer()
 
 
 # MENÚ PRINCIPAL
