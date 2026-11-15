@@ -134,7 +134,9 @@ def abrirJuego(dificultad):
         numeroIngresado = int(valor)
         numeroCorrecto = tableroResuelto[fila][columna]
 
-        if numeroIngresado != numeroCorrecto:
+        if numeroIngresado == numeroCorrecto:
+            matrizCeldas[fila][columna].config(bg="white", fg="#14213d")
+        else: 
             estado["Errores"] += 1
             etiquetaErrores.config(text=f"Errores:{estado['Errores']}/3")
             matrizCeldas[fila][columna].config(fg="red", bg="#fadbd8")
@@ -152,11 +154,11 @@ def abrirJuego(dificultad):
     dibujarTableroVacio(canvas)   
 
     if dificultad == "Fácil":
-        ocultos = 35
+        ocultos = 30
     elif dificultad == "Medio":
-        ocultos = 55
+        ocultos = 50
     else:
-        ocultos = 65
+        ocultos = 60
 
     tableroResuelto = resuelto()
     tableroSinResolver = noResuelto(tableroResuelto, ocultar=ocultos)
@@ -201,7 +203,29 @@ def abrirJuego(dificultad):
                     celda.config(state="normal")
                     celda.delete(0, tk.END)
                     celda.insert(0, str(tableroResuelto[fila][columna]))
-                    celda.config(fg="#27ae60", bg = "white")
+                    celda.config(fg="#00b14a", bg = "white")
+
+    def comprobarJuego():
+        for fila in range(9):
+            for columna in range(9):
+                valor = matrizCeldas[fila][columna].get()
+                if valor == "":
+                    messagebox.showwarning("El tablero esta incompleto", "Algunas casillas faltan por completar")    
+                    return 
+
+                if not valor.isdigit() or int(valor) != tableroResuelto[fila][columna]:
+                    messagebox.showwarning("Revisa bien", "Hay números incorrectos en el tablero.")
+                    return
+
+        if estado["id"] is not None:
+            ventanaJuego.after_cancel(estado["id"])
+
+        minutos = (estado["segundos"]- 1) // 60
+        segundos = (estado["segundos"]- 1) % 60
+
+        felicitaciones = f"Muy bien trabajo {nombreJugador}\n Haz completado el Sudoku en un tiempo de {minutos:02d}:{segundos:02d}"
+        messagebox.showinfo("Felicidades!!!", felicitaciones)
+        cerrar()
 
     # Temporizador 
     def actualizarTimer():  
@@ -222,6 +246,7 @@ def abrirJuego(dificultad):
     crearBoton(panel, "Reiniciar", reiniciarJuego).pack(pady=5)
     crearBoton(panel, "Resolver", resolverJuego).pack(pady=5)
     crearBoton(panel, "Nuevo juego", cerrar).pack(pady=5)
+    crearBoton(panel, "Validar", comprobarJuego).pack(pady=5)
 
     ventanaJuego.protocol("WM_DELETE_WINDOW", cerrar)        
     actualizarTimer()
