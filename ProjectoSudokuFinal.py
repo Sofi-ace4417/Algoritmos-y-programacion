@@ -6,10 +6,11 @@ from pathlib import Path                   # para encontrar la imagen junto al p
 
 TAM = 50                       # tamaño de cada casilla del tablero (pixeles)
 MARGEN = 10                    # espacio alrededor del tablero
+nombreJugador = ""            # aquí se guarda el nombre que escriba el usuario
 
 #  GENERACIÓN DEL SUDOKU
 
-def resueltoFacil():
+def resuelto():
     subCuadro = []
     while len(subCuadro) < 9:
         digito = random.randint(1, 9)
@@ -28,7 +29,7 @@ def resueltoFacil():
         
     return cuadro
 
-def facil(cuadro, ocultar=0):
+def noResuelto(cuadro, ocultar=0):
     cuadroCopia = [fila[:] for fila in cuadro]
     ocultos = 0
 
@@ -94,7 +95,32 @@ def abrirJuego(dificultad):
     ventanaJuego.resizable(False, False)
     ventanaJuego.configure(bg="#e9ecf1")
 
-    estado = {"segundos": 0, "id": None}                     # tiempo y id del temporizador de ESTA ventana
+    estado = {"segundos": 0, "id": None, "Errores": 0}                     # tiempo y id del temporizador de ESTA ventana
+    
+    def contadorErrores(fila, columna, event):
+        valor = matrizCeldas [fila][columna].get()
+
+        if valor == "":
+            return
+
+        if not valor.isdigit() or valor == "0":
+            valor = matrizCeldas [fila][columna].delete(0, tk.END)
+
+        if len(valor) > 1:
+            valor = valor[-1]
+            valor = matrizCeldas [fila][columna].delete(0, tk.END)
+            valor = matrizCeldas [fila][columna].insert(0, valor)
+
+        numeroIngresado = int(valor)
+        numeroCorrecto = tableroResuelto[fila][columna]
+
+        if numeroIngresado != numeroCorrecto:
+            estado["Errores"] += 1
+            etiquetaErrores.config(text=f"Errores:{estado['Errores']}/3")
+
+        if estado["Errores"] >= 3:
+            messagebox.showerror("Lo siento, haz llegado al máximo numero de errores","Fin del juego")
+            cerrar()
 
     # Tablero a la izquierda 
     lado = MARGEN * 2 + TAM * 9  # tamaño total del tablero: 9 casillas + margen a ambos lados
@@ -104,14 +130,14 @@ def abrirJuego(dificultad):
     dibujarTableroVacio(canvas)   # llama a la función que dibuja las casillas y las líneas
 
     if dificultad == "Fácil":
-        ocultos = 30
+        ocultos = 35
     elif dificultad == "Medio":
-        ocultos = 40
+        ocultos = 55
     else:
-        ocultos = 50
+        ocultos = 65
 
-    tableroResuelto = resueltoFacil()
-    tableroSinResolver = facil(tableroResuelto, ocultar=ocultos)
+    tableroResuelto = resuelto()
+    tableroSinResolver = noResuelto(tableroResuelto, ocultar=ocultos)
 
     matrizCeldas = [[None for i in range (9)] for i in range (9)]
 
@@ -129,11 +155,10 @@ def abrirJuego(dificultad):
                 celda.config(state="disabled", disabledbackground="#e9ecf1", disabledforeground="#14213d")
             else:
                 celda.config(bg="white", fg= "#14213d")
+                celda.bind("<KeyRelease>", lambda event, f = fila, c = columna: contadorErrores(f,c, event))
 
             canvas.create_window(x,y, anchor= "nw", window= celda, width = TAM - 7, height= TAM -7)
             matrizCeldas[fila][columna] = celda
-
-    
 
     # Panel a la derecha 
     panel = tk.Frame(ventanaJuego, bg="#f4f6fa", padx=30, pady=20)  # Frame = caja contenedora; fondo claro y relleno interno
@@ -141,13 +166,19 @@ def abrirJuego(dificultad):
 
     mostrarLogo(panel, 200, 80)                              # logo (si existe)
 
+    tk.Label(panel, text=f"Jugador: {nombreJugador}", font=("Helvetica", 15, "bold"),   # muestra el nombre del jugador
+             fg="#3b6fb0", bg="#f4f6fa").pack(pady=5)                                    # azul para que resalte
+
     etiquetaTiempo = tk.Label(panel, text="Timer: 00:00", font=("Helvetica", 15),
                               fg="#14213d", bg="#f4f6fa")
     etiquetaTiempo.pack(pady=5)  # la coloca en el panel con 5 px de espacio arriba y abajo
+    
     tk.Label(panel, text=f"Dificultad: {dificultad}", font=("Helvetica", 15),
              fg="#14213d", bg="#f4f6fa").pack(pady=5)
-    tk.Label(panel, text="Errores: 0/3", font=("Helvetica", 15),
-             fg="#14213d", bg="#f4f6fa").pack(pady=5)
+    
+    etiquetaErrores = tk.Label(panel, text="Errores: 0/3", font=("Helvetica", 15),
+             fg="#14213d", bg="#f4f6fa")
+    etiquetaErrores.pack(pady=5)
 
     # Temporizador (se llama a sí mismo cada segundo) ---
     def actualizarTimer():  # función dentro de otra función: solo existe dentro de abrirJuego
@@ -173,7 +204,7 @@ def abrirJuego(dificultad):
 
 ventana = tk.Tk()
 ventana.title("Menú de Sudoku Python")
-ventana.geometry("480x520")
+ventana.geometry("520x680")
 ventana.resizable(False, False)
 ventana.configure(bg="#e9ecf1")
 
@@ -183,11 +214,68 @@ tarjeta.pack(expand=True)     # expand=True la centra en la ventana
 
 mostrarLogo(tarjeta, 280, 110)  # muestra el logo dentro de la tarjeta (280 x 110 px)
 
-tk.Label(tarjeta, text="Elige la dificultad para comenzar", font=("Helvetica", 12),
-         fg="#4a5568", bg="#f4f6fa").pack(pady=(5, 25))
+# PANTALLA 1: pedir el nombre
+pantallaNombre = tk.Frame(tarjeta, bg="#f4f6fa")             # caja que agrupa todo lo de la pantalla del nombre
+pantallaNombre.pack()                                        # esta pantalla es la que se ve al abrir el programa
 
-crearBoton(tarjeta, "Fácil", lambda: abrirJuego("Fácil")).pack(pady=6) # botón Fácil; lambda hace que abrirJuego se ejecute hasta que se haga clic
-crearBoton(tarjeta, "Medio", lambda: abrirJuego("Medio")).pack(pady=6) # botón Medio; igual, pero manda "Medio"
-crearBoton(tarjeta, "Difícil", lambda: abrirJuego("Difícil")).pack(pady=6)
+tk.Label(pantallaNombre, text="¡Bienvenido a Sudoku Python!", font=("Helvetica", 16, "bold"),   # título de bienvenida
+         fg="#3b6fb0", bg="#f4f6fa").pack(pady=(5, 10))
+tk.Label(pantallaNombre, text="Escribe tu nombre para comenzar:", font=("Helvetica", 12),       # le pide el nombre
+         fg="#4a5568", bg="#f4f6fa").pack(pady=(0, 10))
+
+entradaNombre = tk.Entry(pantallaNombre, font=("Helvetica", 14), justify="center", width=22,    # cuadro de texto donde se escribe
+                         relief="flat", highlightthickness=2,                                   # sin relieve; con borde de 2 px
+                         highlightbackground="#9aa5b8", highlightcolor="#3b6fb0")               # borde gris; azul cuando está activo
+entradaNombre.pack(pady=5)                          # ipady = hace el cuadro más alto por dentro
+entradaNombre.focus_set()                                    # el cursor ya aparece dentro del cuadro, sin dar clic
+
+etiquetaError = tk.Label(pantallaNombre, text="", font=("Helvetica", 10),   # mensaje de error (empieza vacío)
+                         fg="#c0392b", bg="#f4f6fa")                         # texto rojo
+etiquetaError.pack(pady=(0, 10))
+
+# ---------- PANTALLA 2: bienvenida, instrucciones y dificultad ----------
+pantallaMenu = tk.Frame(tarjeta, bg="#f4f6fa")               # caja de la segunda pantalla (todavía NO se muestra)
+
+etiquetaBienvenida = tk.Label(pantallaMenu, text="", font=("Helvetica", 16, "bold"),   # el texto se pone cuando el usuario escribe su nombre
+                              fg="#3b6fb0", bg="#f4f6fa")
+etiquetaBienvenida.pack(pady=(5, 10))
+
+textoInstrucciones = ("Cómo jugar:\n"                                                  # \n = salto de línea
+                      "1. Completa la cuadrícula con números del 1 al 9.\n"
+                      "2. No repitas un número en la misma fila.\n"
+                      "3. No repitas un número en la misma columna.\n"
+                      "4. No repitas un número dentro de cada cuadro de 3x3\n"
+                      "    (los marcados con líneas gruesas).\n"
+                      "5. Los números ya escritos no se pueden cambiar.\n"
+                      "    Haz clic en una casilla blanca y escribe tu número.\n"
+                      "6. Entre más difícil el nivel, más casillas vacías.")              # el texto se une porque está entre paréntesis
+
+tk.Label(pantallaMenu, text=textoInstrucciones, font=("Helvetica", 11),     # etiqueta con las instrucciones
+         fg="#4a5568", bg="#f4f6fa", justify="left").pack(pady=(0, 15))     # justify="left" alinea el texto a la izquierda
+
+tk.Label(pantallaMenu, text="Elige la dificultad para comenzar:", font=("Helvetica", 12, "bold"),
+         fg="#14213d", bg="#f4f6fa").pack(pady=(0, 10))
+
+crearBoton(pantallaMenu, "Fácil", lambda: abrirJuego("Fácil")).pack(pady=6)       # botón Fácil; lambda hace que abrirJuego se ejecute hasta que se haga clic
+crearBoton(pantallaMenu, "Medio", lambda: abrirJuego("Medio")).pack(pady=6)       # botón Medio
+crearBoton(pantallaMenu, "Difícil", lambda: abrirJuego("Difícil")).pack(pady=6)   # botón Difícil
+
+# ---------- Función que pasa de la pantalla 1 a la 2 ----------
+def continuar():                                 
+    global nombreJugador                                     # global porque vamos a CAMBIAR la variable de arriba
+    nombre = entradaNombre.get().strip()                     # lee lo escrito; strip() quita espacios al inicio y al final
+    if nombre == "":                                         # si no escribió nada...
+        etiquetaError.config(text="Por favor escribe tu nombre.")   # ...muestra el error
+        return                                               # ...y se detiene aquí
+    if len(nombre) > 15:                                     # si el nombre es demasiado largo...
+        etiquetaError.config(text="El nombre es muy largo (máximo 15 letras).")
+        return
+    nombreJugador = nombre                                   # guarda el nombre para usarlo en la ventana de juego
+    etiquetaBienvenida.config(text=f"¡Bienvenido, {nombreJugador}!")   # personaliza el saludo
+    pantallaNombre.pack_forget()                             # oculta la pantalla del nombre
+    pantallaMenu.pack()                                      # muestra la pantalla de instrucciones y dificultad
+
+crearBoton(pantallaNombre, "Continuar", continuar).pack(pady=(0, 5))   # botón que llama a continuar()
+                 
 
 ventana.mainloop()
