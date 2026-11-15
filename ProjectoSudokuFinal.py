@@ -5,15 +5,14 @@ from PIL import Image, ImageTk # Importar librería para imágenes
 from pathlib import Path # Para obtener el origen de la imagen
 
 ventana = tk.Tk() # Creamos la ventana
-ventana.title("Sudoku Python") # Título de la ventana
-ventana.geometry("700x620") # Tamaño de la ventana
+ventana.title("Menu de Sudoku Python") # Título de la ventana
+ventana.geometry("450x320") # Tamaño de la ventana
 ventana.resizable(False, False) # No permite el cambio de tamaño de la ventana
 ventana.configure(bg="#FFFFFF") # Cambia el color del fondo de la ventana
 
-
 tiempoSeg = 0
 
-def timer(etiqueta):
+def timer(etiqueta, ventanaActual):
     global tiempoSeg
 
     minutos = tiempoSeg // 60
@@ -23,7 +22,7 @@ def timer(etiqueta):
     etiqueta.configure(text = formatoTiempo) 
 
     tiempoSeg+=1
-    ventana.after(1000,lambda: timer(etiqueta))
+    ventana.after(1000,lambda: timer(etiqueta, ventanaActual))
 
 def imagenVent(contenedor):
     try:
@@ -49,29 +48,42 @@ def imagenVent(contenedor):
         etiquetaErrorLogo = tk.Label(ventana, text="No se pudo cargar el logo.", bg="#FFFFFF", fg="red")
         etiquetaErrorLogo.pack(pady=10)
 
-etiquetaPresentacion = tk.Label(ventana, text = "Bienvenido a Sudoku Python \n"
-                                                "Elige la dificultad...\n", fg="#0097b2",font=("Helvetica", 12)) # Texto que dice los datos a llenar
-etiquetaPresentacion.pack(anchor = "w", 
-                 padx = 20, pady = (25,5))
+def abrirJuego (dificultad):
+    ventanaResumen = tk.Toplevel() # Nueva ventana independiente para mostrar los datos del alumno
 
-frameBotones = tk.Frame(ventana)
-frameBotones.pack(pady=(85, 10)) # 85 = espacio superior (empuja los botones hacia abajo). 10 = espacio inferior.
+    ventanaResumen.title (f"Sudoku Python {dificultad}")
+    ventanaResumen.geometry("700x450")
+    ventanaResumen.resizable(False,False)
+    ventanaResumen.configure(bg="#FFFFFF")
 
-boton = tk.Button(frameBotones, text="Facil",
-                    bg="#0097b2", fg="white",font=("Arial", 12, "bold"),width=15)
-boton.pack(side="left", padx=10)
+    imagenVent(ventanaResumen)
 
-boton = tk.Button(frameBotones, text = "Medio",
-                    bg="#0097b2", fg="white",font=("Arial", 12, "bold"),width=15)
-boton.pack(side="left", padx=10)
+    etiquetaTiempo = tk.Label(ventanaResumen, text = "Temporizador 00:00", font =("Arial", 14), bg="#FFFFFF", fg="#000000", padx = 15, pady=5 )
+    etiquetaTiempo.pack(pady=5)
 
-boton = tk.Button(frameBotones, text = "Dificil", 
-                    bg="#0097b2", fg="white",font=("Arial", 12, "bold"),width=15)
-boton.pack(side="left", padx=10)
+    timer(etiquetaTiempo, ventanaResumen)
 
-imagenVent(ventana)
-etiquetaTiempo = tk.Label(ventana, text = "Temporizador 00:00", font =("Arial", 14), bg="#FFFFFF", fg="#000000", padx = 15, pady=5 )
-etiquetaTiempo.pack(pady=5)
-timer(etiquetaTiempo)
+etiquetaResumen = tk.Label(ventana,
+                           text =   "Bienvenido a Sudoku Python \n"
+                                    "Elige la dificultad...\n"
+                            , fg = "#0097b2", 
+                            font = ("Helvetica", 12), 
+                            justify = "center")
+etiquetaResumen.pack(pady=30) # Para desplegar los datos del alumno
+
+frameBotones = tk.Frame(ventana, bg="#FFFFFF")
+frameBotones.pack(pady=(20,10)) # 85 = espacio superior (empuja los botones hacia abajo). 10 = espacio inferior.
+
+botonFacil = tk.Button(frameBotones, text="Facil",
+                bg="#0097b2", fg="white",font=("Arial", 12, "bold"),width=15, command = lambda: abrirJuego("Facil"))
+botonFacil.pack(side="left", padx=5)
+
+botonMedio = tk.Button(frameBotones, text = "Medio",
+                bg="#0097b2", fg="white",font=("Arial", 12, "bold"),width=15, command = lambda: abrirJuego("Medio"))
+botonMedio.pack(side="left", padx=5)
+
+botonDificil = tk.Button(frameBotones, text = "Dificil", 
+                bg="#0097b2", fg="white",font=("Arial", 12, "bold"),width=15, command = lambda: abrirJuego("Dificil"))
+botonDificil.pack(side="left", padx=5)
 
 ventana.mainloop()
